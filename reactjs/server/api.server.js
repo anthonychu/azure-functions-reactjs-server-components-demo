@@ -21,7 +21,7 @@ babelRegister({
 const express = require('express');
 const compress = require('compression');
 const {readFileSync} = require('fs');
-const {unlink, writeFile} = require('fs/promises');
+// const {unlink, writeFile} = require('fs/promises');
 const {pipeToNodeWritable} = require('react-server-dom-webpack/writer');
 const path = require('path');
 const {Pool} = require('pg');
@@ -104,11 +104,11 @@ app.post(
       [req.body.title, req.body.body, now]
     );
     const insertedId = result.rows[0].id;
-    await writeFile(
-      path.resolve(NOTES_PATH, `${insertedId}.md`),
-      req.body.body,
-      'utf8'
-    );
+    // await writeFile(
+    //   path.resolve(NOTES_PATH, `${insertedId}.md`),
+    //   req.body.body,
+    //   'utf8'
+    // );
     sendResponse(req, res, insertedId);
   })
 );
@@ -122,11 +122,11 @@ app.put(
       'update notes set title = $1, body = $2, updated_at = $3 where id = $4',
       [req.body.title, req.body.body, now, updatedId]
     );
-    await writeFile(
-      path.resolve(NOTES_PATH, `${updatedId}.md`),
-      req.body.body,
-      'utf8'
-    );
+    // await writeFile(
+    //   path.resolve(NOTES_PATH, `${updatedId}.md`),
+    //   req.body.body,
+    //   'utf8'
+    // );
     sendResponse(req, res, null);
   })
 );
@@ -135,7 +135,7 @@ app.delete(
   '/notes/:id',
   handleErrors(async function(req, res) {
     await pool.query('delete from notes where id = $1', [req.params.id]);
-    await unlink(path.resolve(NOTES_PATH, `${req.params.id}.md`));
+    // await unlink(path.resolve(NOTES_PATH, `${req.params.id}.md`));
     sendResponse(req, res, null);
   })
 );
