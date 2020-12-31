@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "filemanager-webpack-plugin": "^3.0.0",
     "prettier": "1.19.1"
   },
   "scripts": {
