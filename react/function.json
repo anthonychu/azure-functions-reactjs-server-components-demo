@@ -1,4 +1,5 @@
 {
+  "scriptFile": "index.server.js",
   "bindings": [
     {
       "authLevel": "anonymous",
