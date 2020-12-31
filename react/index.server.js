@@ -45,30 +45,37 @@ function getModuleMap() {
                 return target[prop];
             }
 
-            const scoredKeys = Object.keys(target)
-                .map(k => {
-                    // compare strings from end and return number of matching characters
-                    const keyChars = k.split('');
-                    const propChars = prop.split('');
+            const bestKey = findBestMatchedKey(target, prop);
+            if (bestKey) {
+                return target[bestKey];
+            }
 
-                    for (let i = 0; i < keyChars.length && i < propChars.length; i++) {
-                        console.log(`${propChars[propChars.length - i - 1]} = ${keyChars[keyChars.length - i - 1]}`)
-                        if (keyChars[keyChars.length - i - 1] !== propChars[propChars.length - i - 1]) {
-                            return {
-                                key: k,
-                                matchedChars: i
-                            };
+            function findBestMatchedKey(target, prop) {
+                const propChars = prop.split('');
+                const scoredKeys = Object.keys(target)
+                    .map(k => {
+                        // compare strings from end and return number of matching characters
+                        const keyChars = k.split('');
+
+                        for (let i = 0; i < keyChars.length && i < propChars.length; i++) {
+                            console.log(`${propChars[propChars.length - i - 1]} = ${keyChars[keyChars.length - i - 1]}`)
+                            if (keyChars[keyChars.length - i - 1] !== propChars[propChars.length - i - 1]) {
+                                return {
+                                    key: k,
+                                    matchedChars: i
+                                };
+                            }
                         }
-                    }
-                    return {
-                        key: k,
-                        matchedChars: 0
-                    };
-                })
-                .sort((a, b) => b.matchedChars - a.matchedChars);
+                        return {
+                            key: k,
+                            matchedChars: 0
+                        };
+                    })
+                    .sort((a, b) => b.matchedChars - a.matchedChars);
 
-            if (scoredKeys.length && scoredKeys[0].matchedChars) {
-                return target[scoredKeys[0].key];
+                if (scoredKeys.length && scoredKeys[0].matchedChars) {
+                    return scoredKeys[0].key;
+                }
             }
         }
     });
