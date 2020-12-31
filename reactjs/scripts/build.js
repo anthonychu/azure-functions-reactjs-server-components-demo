@@ -15,6 +15,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactServerWebpackPlugin = require('react-server-dom-webpack/plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 
+const functionsOutputFolder = path.resolve(__dirname, "../../functions/_output");
+
 const isProduction = process.env.NODE_ENV === 'production';
 rimraf.sync(path.resolve(__dirname, '../build'));
 webpack(
@@ -45,18 +47,18 @@ webpack(
         events: {
           onStart: {
             delete: [
-              path.resolve(__dirname, "../../functions/reactjs"),
+              functionsOutputFolder,
             ]
           },
           onEnd: {
             copy: [
               {
-                source: path.resolve(__dirname, "../build"),
-                destination: path.resolve(__dirname, "../../functions/reactjs/build"),
+                source: path.resolve(__dirname, '../build'),
+                destination: path.resolve(functionsOutputFolder, 'build'),
               },
               {
-                source: path.resolve(__dirname, "../src"),
-                destination: path.resolve(__dirname, "../../functions/reactjs/src"),
+                source: path.resolve(__dirname, '../src'),
+                destination: path.resolve(functionsOutputFolder, 'src'),
               },
             ],
           },
