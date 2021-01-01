@@ -58,7 +58,6 @@ function getModuleMap() {
                         const keyChars = k.split('');
 
                         for (let i = 0; i < keyChars.length && i < propChars.length; i++) {
-                            console.log(`${propChars[propChars.length - i - 1]} = ${keyChars[keyChars.length - i - 1]}`)
                             if (keyChars[keyChars.length - i - 1] !== propChars[propChars.length - i - 1]) {
                                 return {
                                     key: k,
@@ -89,7 +88,6 @@ class Writer {
         this.handlers = {}
     }
     write(s) {
-        console.log(s.toString());
         this.buffer.push(s.toString())
         return true;
     }
@@ -97,7 +95,6 @@ class Writer {
         if (s) {
             this.write(s);
         }
-        console.log("DONE!!!!!")
         const handlers = this.handlers.done;
         if (handlers) {
             handlers.forEach((fn) => {
