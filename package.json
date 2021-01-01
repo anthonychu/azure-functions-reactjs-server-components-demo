@@ -16,6 +16,7 @@
     "excerpts": "^0.0.3",
     "html-webpack-plugin": "4.5.0",
     "marked": "^1.2.5",
+    "memory-stream": "^1.0.0",
     "pg": "^8.5.1",
     "react": "0.0.0-experimental-3310209d0",
     "react-dom": "0.0.0-experimental-3310209d0",
