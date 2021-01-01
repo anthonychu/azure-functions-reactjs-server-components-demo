@@ -1,0 +1,22 @@
+{
+  "scriptFile": "../function_react/index.server.js",
+  "entryPoint": "notesFunction",
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "put",
+        "post"
+      ],
+      "route": "notes"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    }
+  ]
+}

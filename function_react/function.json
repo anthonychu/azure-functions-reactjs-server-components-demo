@@ -1,5 +1,6 @@
 {
   "scriptFile": "index.server.js",
+  "entryPoint": "reactFunction",
   "bindings": [
     {
       "authLevel": "anonymous",
@@ -9,7 +10,8 @@
       "methods": [
         "get",
         "post"
-      ]
+      ],
+      "route": "react"
     },
     {
       "type": "http",
