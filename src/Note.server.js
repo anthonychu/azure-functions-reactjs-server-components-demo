@@ -17,11 +17,6 @@ import EditButton from './EditButton.client';
 import NoteEditor from './NoteEditor.client';
 
 export default function Note({ selectedId, isEditing }) {
-  // const note =
-  //   selectedId != null
-  //     ? fetch(`http://localhost:4000/notes/${selectedId}`).json()
-  //     : null;
-
   let note = null;
   
   if (selectedId !== null) {
@@ -34,7 +29,6 @@ export default function Note({ selectedId, isEditing }) {
       note = notes[0];
     }
   }
-
 
   if (note === null) {
     if (isEditing) {
