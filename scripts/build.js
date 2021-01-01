@@ -13,6 +13,7 @@ const rimraf = require('rimraf');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactServerWebpackPlugin = require('react-server-dom-webpack/plugin');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 rimraf.sync(path.resolve(__dirname, '../build'));
@@ -40,6 +41,39 @@ webpack(
         template: path.resolve(__dirname, '../public/index.html'),
       }),
       new ReactServerWebpackPlugin({ isServer: false }),
+      new FileManagerPlugin({
+        events: {
+          // copy public folder over to build, but keep what's already in build
+          onEnd: [
+            {
+              mkdir: [path.resolve(__dirname, '../buildtemp')],
+            },
+            {
+              copy: [
+                {
+                  source: path.resolve(__dirname, '../public'),
+                  destination: path.resolve(__dirname, '../buildtemp')
+                },
+                {
+                  source: path.resolve(__dirname, '../build'),
+                  destination: path.resolve(__dirname, '../buildtemp')
+                },
+              ]
+            },
+            {
+              copy: [
+                {
+                  source: path.resolve(__dirname, '../buildtemp'),
+                  destination: path.resolve(__dirname, '../build')
+                },
+              ]
+            },
+            {
+              delete: [path.resolve(__dirname, '../buildtemp')]
+            },
+          ],
+        },
+      }),
     ],
   },
   (err, stats) => {
