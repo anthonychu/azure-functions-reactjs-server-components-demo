@@ -54,6 +54,10 @@ webpack(
                   source: path.resolve(__dirname, '../public'),
                   destination: path.resolve(__dirname, '../buildtemp')
                 },
+              ]
+            },
+            {
+              copy: [
                 {
                   source: path.resolve(__dirname, '../build'),
                   destination: path.resolve(__dirname, '../buildtemp')
