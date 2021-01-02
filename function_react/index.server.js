@@ -1,4 +1,4 @@
-require('../funcutil/babelregister');
+require('../funcutil/babelregister.server');
 
 const React = require('react');
 const ReactApp = require('../src/App.server').default;
