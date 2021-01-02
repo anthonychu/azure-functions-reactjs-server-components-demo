@@ -20,7 +20,7 @@ export default function NoteEditor({noteId, initialTitle, initialBody}) {
   const [location, setLocation] = useLocation();
   const [startNavigating, isNavigating] = unstable_useTransition();
   const [isSaving, saveNote] = useMutation({
-    endpoint: noteId !== null ? `/notes/${noteId}` : `/notes`,
+    endpoint: noteId !== null ? `http://localhost:7071/api/notes/${noteId}` : `/notes`,
     method: noteId !== null ? 'PUT' : 'POST',
   });
   const [isDeleting, deleteNote] = useMutation({
@@ -51,8 +51,8 @@ export default function NoteEditor({noteId, initialTitle, initialBody}) {
   }
 
   function navigate(response) {
-    const cacheKey = response.headers.get('X-Location');
-    const nextLocation = JSON.parse(cacheKey);
+    let cacheKey = response.headers.get('X-Location');
+    let nextLocation = JSON.parse(cacheKey);
     const seededResponse = createFromReadableStream(response.body);
     startNavigating(() => {
       refresh(cacheKey, seededResponse);

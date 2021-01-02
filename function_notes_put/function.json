@@ -1,6 +1,6 @@
 {
   "scriptFile": "../function_react/index.server.js",
-  "entryPoint": "notesFunction",
+  "entryPoint": "notesPutFunction",
   "bindings": [
     {
       "authLevel": "anonymous",
@@ -11,7 +11,7 @@
         "put",
         "post"
       ],
-      "route": "notes"
+      "route": "notes/{id}"
     },
     {
       "type": "http",

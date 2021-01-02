@@ -2,11 +2,31 @@ require('../funcutil/babelregister');
 
 const React = require('react');
 const ReactApp = require('../src/App.server').default;
+const { Pool } = require('pg');
+const pool = new Pool(require('../credentials'));
 
 const { createResponseBody } = require('../funcutil/react-utils.server');
 
-async function reactFunction (context, req) {
+async function reactFunction(context, req) {
+    return await createResponse(req);
+}
+
+async function notesPutFunction(context, req) {
+    const now = new Date();
+    const updatedId = Number(req.params.id);
+    await pool.query(
+        'update notes set title = $1, body = $2, updated_at = $3 where id = $4',
+        [req.body.title, req.body.body, now, updatedId]
+    );
+    return await createResponse(req);
+}
+
+async function createResponse(req, redirectToId) {
     const location = JSON.parse(req.query.location);
+
+    if (redirectToId) {
+      location.selectedId = redirectToId;
+    }
 
     const props = {
         selectedId: location.selectedId,
@@ -18,26 +38,13 @@ async function reactFunction (context, req) {
     return {
         body: responseBody,
         headers: {
-            'X-Location': JSON.stringify(props)
+            'X-Location': JSON.stringify(location),
+            'Access-Control-Expose-Headers': 'X-Location'
         }
-    };
-}
-
-async function notesFunction (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
-
-    const name = (req.query.name || (req.body && req.body.name));
-    const responseMessage = name
-        ? "Hello, " + name + ". This HTTP triggered function executed successfully."
-        : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
-
-    return {
-        // status: 200, /* Defaults to 200 */
-        body: responseMessage
     };
 }
 
 module.exports = {
     reactFunction,
-    notesFunction,
+    notesPutFunction,
 };
