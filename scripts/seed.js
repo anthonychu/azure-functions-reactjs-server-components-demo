@@ -33,6 +33,7 @@ const createTableStatement = `CREATE TABLE notes (
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   title TEXT,
+  userid TEXT,
   body TEXT
 );`;
 const insertNoteStatement = `INSERT INTO notes(title, body, created_at, updated_at)
@@ -67,26 +68,27 @@ async function seed() {
   const res = await Promise.all(
     seedData.map((row) => pool.query(insertNoteStatement, row))
   );
+  console.log(res);
 
-  const oldNotes = await readdir(path.resolve(NOTES_PATH));
-  await Promise.all(
-    oldNotes
-      .filter((filename) => filename.endsWith('.md'))
-      .map((filename) => unlink(path.resolve(NOTES_PATH, filename)))
-  );
+  // const oldNotes = await readdir(path.resolve(NOTES_PATH));
+  // await Promise.all(
+  //   oldNotes
+  //     .filter((filename) => filename.endsWith('.md'))
+  //     .map((filename) => unlink(path.resolve(NOTES_PATH, filename)))
+  // );
 
-  await Promise.all(
-    res.map(({rows}) => {
-      const id = rows[0].id;
-      const content = rows[0].body;
-      const data = new Uint8Array(Buffer.from(content));
-      return writeFile(path.resolve(NOTES_PATH, `${id}.md`), data, (err) => {
-        if (err) {
-          throw err;
-        }
-      });
-    })
-  );
+  // await Promise.all(
+  //   res.map(({rows}) => {
+  //     const id = rows[0].id;
+  //     const content = rows[0].body;
+  //     const data = new Uint8Array(Buffer.from(content));
+  //     return writeFile(path.resolve(NOTES_PATH, `${id}.md`), data, (err) => {
+  //       if (err) {
+  //         throw err;
+  //       }
+  //     });
+  //   })
+  // );
 }
 
 seed();
