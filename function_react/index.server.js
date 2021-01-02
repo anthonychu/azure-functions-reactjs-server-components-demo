@@ -31,6 +31,11 @@ async function notesPostFunction(context, req) {
     return await createResponse(req, insertedId);
 }
 
+async function notesDeleteFunction(context, req) {
+    await pool.query('delete from notes where id = $1', [req.params.id]);
+    return await createResponse(req);
+}
+
 async function createResponse(req, redirectToId) {
     const location = JSON.parse(req.query.location);
 
@@ -56,6 +61,7 @@ async function createResponse(req, redirectToId) {
 
 module.exports = {
     reactFunction,
+    notesDeleteFunction,
     notesPostFunction,
     notesPutFunction,
 };

@@ -1,0 +1,21 @@
+{
+  "scriptFile": "../function_react/index.server.js",
+  "entryPoint": "notesDeleteFunction",
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "delete"
+      ],
+      "route": "notes/{id}"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    }
+  ]
+}
