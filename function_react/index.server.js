@@ -21,11 +21,21 @@ async function notesPutFunction(context, req) {
     return await createResponse(req);
 }
 
+async function notesPostFunction(context, req) {
+    const now = new Date();
+    const result = await pool.query(
+        'insert into notes (title, body, created_at, updated_at) values ($1, $2, $3, $3) returning id',
+        [req.body.title, req.body.body, now]
+    );
+    const insertedId = result.rows[0].id;
+    return await createResponse(req, insertedId);
+}
+
 async function createResponse(req, redirectToId) {
     const location = JSON.parse(req.query.location);
 
     if (redirectToId) {
-      location.selectedId = redirectToId;
+        location.selectedId = redirectToId;
     }
 
     const props = {
@@ -46,5 +56,6 @@ async function createResponse(req, redirectToId) {
 
 module.exports = {
     reactFunction,
+    notesPostFunction,
     notesPutFunction,
 };
