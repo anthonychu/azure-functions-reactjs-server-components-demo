@@ -5,7 +5,7 @@
     "AzureWebJobsStorage": "",
     "languageWorkers__node__arguments": "--conditions=react-server",
     "BABEL_DISABLE_CACHE": "1",
-    "NODE_ENV": "development"
+    "NODE_ENV": "production"
   },
   "Host": {
     "CORS": "*"

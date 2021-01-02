@@ -8,6 +8,7 @@
 
 import {useState, unstable_useTransition} from 'react';
 import {createFromReadableStream} from 'react-server-dom-webpack';
+import {apiBaseUrl} from './config';
 
 import NotePreview from './NotePreview';
 import {useRefresh} from './Cache.client';
@@ -20,7 +21,7 @@ export default function NoteEditor({noteId, initialTitle, initialBody}) {
   const [location, setLocation] = useLocation();
   const [startNavigating, isNavigating] = unstable_useTransition();
   const [isSaving, saveNote] = useMutation({
-    endpoint: noteId !== null ? `http://localhost:7071/api/notes/${noteId}` : `/notes`,
+    endpoint: noteId !== null ? `${apiBaseUrl}/notes/${noteId}` : `/notes`,
     method: noteId !== null ? 'PUT' : 'POST',
   });
   const [isDeleting, deleteNote] = useMutation({

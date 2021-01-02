@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
     "filemanager-webpack-plugin": "^3.0.0",
     "prettier": "1.19.1",
     "webpack-cli": "^4.2.0"
@@ -45,7 +46,8 @@
     "bundler:dev": "cross-env NODE_ENV=development nodemon -- scripts/build.js",
     "bundler:prod": "cross-env NODE_ENV=production nodemon -- scripts/build.js",
     "prettier": "prettier --write **/*.js",
-    "seed": "node ./scripts/seed.js"
+    "seed": "node ./scripts/seed.js",
+    "build": "cross-env NODE_ENV=production node scripts/build.js"
   },
   "babel": {
     "presets": [

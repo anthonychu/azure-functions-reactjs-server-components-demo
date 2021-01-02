@@ -8,6 +8,7 @@
 
 import {unstable_getCacheForType, unstable_useCacheRefresh} from 'react';
 import {createFromFetch} from 'react-server-dom-webpack';
+import { apiBaseUrl } from './config';
 
 function createResponseCache() {
   return new Map();
@@ -27,8 +28,9 @@ export function useServerResponse(location) {
   if (response) {
     return response;
   }
+  const env = process.env.NODE_ENV;
   response = createFromFetch(
-    fetch('http://localhost:7071/api/react?location=' + encodeURIComponent(key))
+    fetch(apiBaseUrl + '/react?location=' + encodeURIComponent(key))
   );
   cache.set(key, response);
   return response;
