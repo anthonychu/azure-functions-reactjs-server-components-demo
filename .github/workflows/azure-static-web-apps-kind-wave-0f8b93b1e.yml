@@ -20,7 +20,9 @@ jobs:
           submodules: true
       - name: Build app and API
         run: | # build and then blank out package.json (so deploy step doesn't reinstall modules)
+          npm install
           npm run build
+          npm prune --production
           rm package.json package-lock.json
           npm init -y
       - name: Deploy
