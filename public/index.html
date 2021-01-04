@@ -22,10 +22,6 @@
             init = Object.assign({ signal: controller.signal }, init);
             return await nativeFetch(resource, init);
           } catch (e) {
-            if (args[1] && args[1].method !== 'GET') {
-              // Don't retry mutations to avoid confusion
-              throw e;
-            }
             await new Promise(resolve => setTimeout(resolve, 1000));
           }
         }
