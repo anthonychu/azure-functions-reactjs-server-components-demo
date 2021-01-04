@@ -12,10 +12,14 @@ import {ErrorBoundary} from 'react-error-boundary';
 import {useServerResponse} from './Cache.client';
 import {LocationContext} from './LocationContext.client';
 
+function reloadPage() {
+  window.location.reload();
+}
+
 export default function Root({initialCache}) {
   return (
     <Suspense fallback={null}>
-      <ErrorBoundary FallbackComponent={Error}>
+      <ErrorBoundary onError={reloadPage} FallbackComponent={Error}>
         <Content />
       </ErrorBoundary>
     </Suspense>
@@ -39,7 +43,6 @@ function Content() {
 function Error({error}) {
   return (
     <div>
-      <h1>Application Error</h1>
       <pre style={{whiteSpace: 'pre-wrap'}}>{error.stack}</pre>
     </div>
   );
