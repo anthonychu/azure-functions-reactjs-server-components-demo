@@ -16,13 +16,13 @@ import NotePreview from './NotePreview';
 import EditButton from './EditButton.client';
 import NoteEditor from './NoteEditor.client';
 
-export default function Note({ selectedId, isEditing }) {
+export default function Note({ selectedId, isEditing, userInfo }) {
   let note = null;
   
-  if (selectedId !== null) {
+  if (selectedId !== null && userInfo) {
     const notes = db.query(
-      'select * from notes where id = $1',
-      [ selectedId ]
+      'select * from notes where id = $1 and userid = $2',
+      [ selectedId, userInfo.userId ]
     ).rows;
 
     if (notes.length) {

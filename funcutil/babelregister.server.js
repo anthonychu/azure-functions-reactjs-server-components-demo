@@ -4,7 +4,9 @@ try {
     const babelRegister = require('@babel/register');
     babelRegister({
         ignore: [
-            /[\\\/](build|server|node_modules|functions)[\\\/]/,
+            // ignore build except if preceeded by react-static-web-apps-auth/ (reference to my local package)
+            // ignore node_modules except if followed by react-static-web-apps-auth
+            /[\\\/]((?<!react-static-web-apps-auth[\\\/])build|server|node_modules(?![\\\/].+[\\\/]react-static-web-apps-auth)|functions)[\\\/]/,
             /[\\\/]index\.server\.js/,
             /[\\\/]worker-bundle\.js/,
         ],

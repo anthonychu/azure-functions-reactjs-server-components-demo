@@ -644,6 +644,18 @@ ul.notes-list {
   position: absolute;
 }
 
+.login-pane {
+  padding: 60px;
+}
+
+a.login.azure-swa-auth {
+  display: block;
+}
+
+.sidebar-login {
+  padding: 0 24px 16px;
+}
+
 /* ---------------------------------------------------------------------------*/
 @keyframes spin {
   to {

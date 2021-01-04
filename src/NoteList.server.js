@@ -11,16 +11,19 @@ import {fetch} from 'react-fetch';
 import {db} from './db.server';
 import SidebarNote from './SidebarNote';
 
-export default function NoteList({searchText}) {
+export default function NoteList({ searchText, userInfo }) {
   // const notes = fetch('http://localhost:4000/notes').json();
 
   // WARNING: This is for demo purposes only.
   // We don't encourage this in real apps. There are far safer ways to access
   // data in a real application!
-  const notes = db.query(
-    `select * from notes where title ilike $1 order by id desc`,
-    ['%' + searchText + '%']
-  ).rows;
+  let notes = [];
+  if (userInfo) {
+    notes = db.query(
+      `select * from notes where title ilike $1 and userid = $2 order by id desc`,
+      ['%' + searchText + '%', userInfo.userId]
+    ).rows;
+  }
 
   // const notes = [];
 

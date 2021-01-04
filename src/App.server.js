@@ -6,7 +6,7 @@
  *
  */
 
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 
 import Note from './Note.server';
 import NoteList from './NoteList.server';
@@ -15,7 +15,10 @@ import SearchField from './SearchField.client';
 import NoteSkeleton from './NoteSkeleton';
 import NoteListSkeleton from './NoteListSkeleton';
 
-export default function App({selectedId, isEditing, searchText}) {
+import { Logout, StaticWebAuthLogins } from "@aaronpowell/react-static-web-apps-auth";
+
+export default function App({ selectedId, isEditing, searchText, userInfo }) {
+
   return (
     <div className="main">
       <section className="col sidebar">
@@ -30,21 +33,37 @@ export default function App({selectedId, isEditing, searchText}) {
           />
           <strong>React Notes</strong>
         </section>
-        <section className="sidebar-menu" role="menubar">
-          <SearchField />
-          <EditButton noteId={null}>New</EditButton>
-        </section>
-        <nav>
-          <Suspense fallback={<NoteListSkeleton />}>
-            <NoteList searchText={searchText} />
-          </Suspense>
-        </nav>
+        { userInfo &&
+          <>
+            <section className="sidebar-login" role="menubar">
+              {userInfo.userDetails} | <Logout />
+            </section>
+            <section className="sidebar-menu" role="menubar">
+              <SearchField />
+              <EditButton noteId={null}>New</EditButton>
+            </section>
+            <nav>
+              <Suspense fallback={<NoteListSkeleton />}>
+                <NoteList searchText={searchText} userInfo={userInfo} />
+              </Suspense>
+            </nav>
+          </>
+        }
       </section>
-      <section key={selectedId} className="col note-viewer">
-        <Suspense fallback={<NoteSkeleton isEditing={isEditing} />}>
-          <Note selectedId={selectedId} isEditing={isEditing} />
-        </Suspense>
-      </section>
+      {
+        userInfo
+          ? <section key={selectedId} className="col note-viewer">
+              <Suspense fallback={<NoteSkeleton isEditing={isEditing} />}>
+                <Note selectedId={selectedId} isEditing={isEditing} userInfo={userInfo} />
+              </Suspense>
+            </section>
+          : <section key={selectedId} className="col login-pane">
+              <p>
+                To view and edit notes, log in with one of these providers:
+              </p>
+              <StaticWebAuthLogins />
+            </section>
+      }
     </div>
   );
 }

@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=14.9.0"
   },
   "license": "MIT",
   "dependencies": {
+    "@aaronpowell/react-static-web-apps-auth": "git+https://github.com/anthonychu/react-static-web-apps-auth.git#react-server-components",
     "@babel/core": "7.12.3",
     "@babel/register": "^7.12.1",
     "babel-loader": "8.1.0",
