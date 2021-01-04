@@ -10,13 +10,17 @@
   <body>
     <div id="root"></div>
     <script>
-      // In development, we restart the server on every edit.
+      // In Azure Functions, we currently use a bit of a hack to restart the Node
+      // worker so that it's uses the conditions flag, which might cause an http error.
       // For the purposes of this demo, retry fetch automatically.
       let nativeFetch = window.fetch;
-      window.fetch = async function fetchWithRetry(...args) {
-        for (let i = 0; i < 30; i++) {
+      window.fetch = async function fetchWithRetry(resource, init) {
+        for (let i = 0; i < 15; i++) {
           try {
-            return await nativeFetch(...args);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            init = Object.assign({ signal: controller.signal }, init);
+            return await nativeFetch(resource, init);
           } catch (e) {
             if (args[1] && args[1].method !== 'GET') {
               // Don't retry mutations to avoid confusion
@@ -25,7 +29,7 @@
             await new Promise(resolve => setTimeout(resolve, 1000));
           }
         }
-        return nativeFetch(...args);
+        return nativeFetch(resource, init);
       }
     </script>
   </body>
