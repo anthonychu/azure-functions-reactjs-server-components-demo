@@ -14,7 +14,7 @@
       // For the purposes of this demo, retry fetch automatically.
       let nativeFetch = window.fetch;
       window.fetch = async function fetchWithRetry(...args) {
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 30; i++) {
           try {
             return await nativeFetch(...args);
           } catch (e) {
@@ -22,7 +22,7 @@
               // Don't retry mutations to avoid confusion
               throw e;
             }
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 1000));
           }
         }
         return nativeFetch(...args);
