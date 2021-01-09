@@ -15,10 +15,13 @@ try {
         cache: false,
     });
     require('react-fs');
-} catch {
-    // force a restart of the function host
+} catch (err) {
+    console.error(err);
+    // force a restart of the functions Node.js worker
     // --conditions might not be set on the worker if a placeholder is being used
     // hopefully restarting it will pick that up
-    console.log("\n\n\n>>>>>> exiting\n\n\n");
-    process.exit(1);
+    if (process.env.languageWorkers__node__arguments) {
+        console.log("\n\n\n>>>>>> exiting\n\n\n");
+        process.exit(1);
+    }
 }
