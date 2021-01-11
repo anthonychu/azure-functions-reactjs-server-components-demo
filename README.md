@@ -8,7 +8,7 @@ Azure services used:
 - Azure Static Web Apps (and Azure Functions)
 - Azure Database for PostgreSQL - Flexible Server
 
-[Original README](README.orig.md)
+See [original README](README.orig.md) for license and other info.
 
 ## Run locally
 
