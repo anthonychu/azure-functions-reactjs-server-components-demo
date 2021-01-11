@@ -5,7 +5,7 @@ This is a port of the [React Server Components "React Notes"](https://github.com
 **Live demo: https://react-notes.anthonychu.com/**
 
 Azure services used:
-- Azure Static Web Apps (and Azure Functions)
+- [Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/overview) (and Azure Functions)
 - Azure Database for PostgreSQL - Flexible Server
 
 See [original README](README.orig.md) for license and other info.
@@ -105,4 +105,5 @@ A few changes were made to the demo app to work better in Azure.
 - The demo requires the `--conditions` flag to be set in the Node.js process. This flag is set with `languageWorkers__node__arguments` app setting. Because Azure Functions starts the Node worker process before your app is loaded, you typically need to set an extra app setting (`WEBSITE_USE_PLACEHOLDER=0`) to delay the start of the worker process. However, function apps in Static Web Apps are not allowed to configure app settings starting with `WEBSITE_`. To get around this, if the `conditions` flag isn't set, there is code in `funcutil/babelregister.server.js` to cause a restart in the Node process. This is a huge hack and should never be used in a production app!
 - The `pipeToNodeWritable` function in React Server Components requires writing to a stream. Like some other serverless platforms, Azure Functions is unable to stream responses. We use a `memory-stream` for this.
 - `pipeToNodeWritable` looks up client components in a generated manifest. Because the manifest contains full paths from the build machine that are different than the paths in the Azure Functions environment, we use a proxy to select the file with the nearest matching name. See `funcutil/react-utils.server.js`.
+- CORS - When running locally and the frontend is served from a different port than the Azure Functions app, CORS is required. CORS is enabled on Azure Functions, but because the demo relies on an `X-Location` header, an additional `'Access-Control-Expose-Headers': 'X-Location'` must be added to responses.
 - Authentication was added to the app to allow only logged in users to view and modify their own notes.
