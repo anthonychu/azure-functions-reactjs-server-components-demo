@@ -59,8 +59,7 @@ export default function App({ selectedId, isEditing, searchText, userInfo }) {
             </section>
           : <section key={selectedId} className="col login-pane">
               <p>
-                Welcome to the a demo of React Server Components running on
-                <a href="https://docs.microsoft.com/en-us/azure/static-web-apps/overview">Azure Static Web Apps</a>.
+                Welcome to the a demo of React Server Components running on <a href="https://docs.microsoft.com/en-us/azure/static-web-apps/overview">Azure Static Web Apps</a>.
                 <br />&nbsp;
               </p>
               <p>
