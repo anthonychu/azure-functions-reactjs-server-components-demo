@@ -10,7 +10,7 @@ const { createResponseBody } = require('../funcutil/react-utils.server');
 const { decodeAuthInfo } = require('../funcutil/auth');
 
 async function reactFunction(context, req) {
-    return await createResponse(req);
+    return await createResponse(context, req);
 }
 
 async function notesPutFunction(context, req) {
@@ -25,7 +25,7 @@ async function notesPutFunction(context, req) {
         'update notes set title = $1, body = $2, updated_at = $3 where id = $4 and userid = $5',
         [req.body.title, req.body.body, now, updatedId, userInfo.userId]
     );
-    return await createResponse(req);
+    return await createResponse(context, req);
 }
 
 async function notesPostFunction(context, req) {
@@ -40,7 +40,7 @@ async function notesPostFunction(context, req) {
         [req.body.title, req.body.body, now, userInfo.userId]
     );
     const insertedId = result.rows[0].id;
-    return await createResponse(req, insertedId);
+    return await createResponse(context, req, insertedId);
 }
 
 async function notesDeleteFunction(context, req) {
@@ -52,10 +52,10 @@ async function notesDeleteFunction(context, req) {
     await pool.query(
         'delete from notes where id = $1 and userid = $2',
         [req.params.id, userInfo.userId]);
-    return await createResponse(req);
+    return await createResponse(context, req);
 }
 
-async function createResponse(req, redirectToId) {
+async function createResponse(context, req, redirectToId) {
     const location = JSON.parse(req.query.location);
 
     if (redirectToId) {
@@ -70,6 +70,10 @@ async function createResponse(req, redirectToId) {
         isEditing: location.isEditing,
         searchText: location.searchText,
     };
+
+    if (userInfo) {
+        context.log(JSON.stringify(userInfo, null, 2));
+    }
 
     const responseBody = await createResponseBody(React.createElement(ReactApp, props));
     return {
